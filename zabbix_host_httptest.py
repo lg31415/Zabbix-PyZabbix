@@ -65,7 +65,7 @@ if __name__ == "__main__":
     hostid=zapi.host.get({"filter":{"host":hostname}})[0]["hostid"]
     try:
         if url:
-            description="访问"+httptestname+"出现问题"
+            description="访问"+httptestname+"出现问题,探测IP："+ url
             print zapi.httptest.create({"name":httptestname,"hostid":hostid, "delay": 300,"steps":[{"name": httptestname,"url": url,"status_codes": "200","required":"successed","headers":[{"name":"Host","value":headerhost}],"no": 1}]})
             expression="{"+"{0}:web.test.fail[{1}].last()".format(hostname,httptestname)+"}"+"<>0"
             print zapi.trigger.create({"description":description,"expression":expression,"priority":5})
