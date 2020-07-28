@@ -26,6 +26,8 @@ def get_options():
         dest="hostname",help="(REQUIRED)hostname for hosts.")
     parser.add_option("-n","--name",action="store",type="string",\
         dest="name",default="",help="Visible name of the host. Default: host property value.")
+    parser.add_option("--proxy", action="store", type="string", \
+                      dest="proxy", default="", help="name of the proxy that is used to monitor the host.")
     parser.add_option("--status",action="store",type="int",\
         dest="status",default="0",help="""Status and function of the host. 
 Possible values are:
@@ -59,7 +61,13 @@ if __name__ == "__main__":
     hostname = options.hostname
     status = options.status
     name = options.name
+    proxy = options.proxy
     file = options.filename
+
+    if proxy:
+        proxy_id = zapi.proxy.get({"output": "proxyid", "selectInterface": "extend", "filter": {"host": proxy}})[0]['proxyid']
+    else:
+        proxy_id = ""
 
     if file:
         with open(file,"r") as f:
@@ -80,7 +88,13 @@ if __name__ == "__main__":
         hostid=zapi.host.get({"filter":{"host":hostname}})[0]["hostid"]
         print hostname,'\t',hostid,'\t',status
         try:
-            msg = zapi.host.update({"hostid":hostid,"status":status})
+            if proxy_id:
+                msg= zapi.host.update({"hostid":hostid,"proxy_hostid": proxy_id})
+            elif hostname:
+                msg = zapi.host.update({"hostid": hostid, "host": hostname})
+            else:
+                msg= zapi.host.update({"hostid":hostid,"status": status})
 	    print msg
         except Exception as e:
             print str(e)
+

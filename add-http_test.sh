@@ -1,0 +1,1 @@
+while read name pro ip ;do  python zabbix_host_httptest.py -s http://zabbix.cmcdn.cdn.10086.cn/api_jsonrpc.php -u Admin -p Cmcc123456 -H 'Zabbix-Server' --url 'http://'$ip'/' --headerhost 'heartbeat.cmcc'  --httptestname $name ;done < webtest.list

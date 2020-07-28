@@ -27,6 +27,9 @@ class ZabbixAPI(object):
         self.request_data["method"] = method
         self.request_data["params"] = params
 	request = urllib2.Request(url=self.url,data=json.dumps(self.request_data),headers=self.headers)
+	response = urllib2.urlopen(request)
+	s = json.loads(response.read())
+        print s
 	try:
 	    response = urllib2.urlopen(request)
 	    #return json.loads(response.read())["result"]
