@@ -1,0 +1,1 @@
+while read name pro ip ;do  python zabbix_host_httptest.py -s http://zabbix.cmcdn.cdn.10086.cn/api_jsonrpc.php -u Admin -p 593ca39a44a152  -H 'tj1-cmcdn4.tjyd.cmcdn.net' --url 'http://['$ip']/' --headerhost 'heartbeat.cmcc' --httptestname $name"-ipv6" ;done < webtest-ipv6.list

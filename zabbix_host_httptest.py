@@ -67,7 +67,7 @@ if __name__ == "__main__":
         if url:
             description="访问"+httptestname+"出现问题,探测IP："+ url
             print zapi.httptest.create({"name":httptestname,"hostid":hostid, "delay": 300,"steps":[{"name": httptestname,"url": url,"status_codes": "200","required":"successed","headers":[{"name":"Host","value":headerhost}],"no": 1}]})
-            expression="{"+"{0}:web.test.fail[{1}].last()".format(hostname,httptestname)+"}"+"<>0"
+            expression="{"+"{0}:web.test.fail[{1}].last(#6)".format(hostname,httptestname)+"}"+"<>0"
             print zapi.trigger.create({"description":description,"expression":expression,"priority":5})
 	else:
             print zapi.httptest.create({"name":httptestname,"hostid":hostid,"steps":[{"name": httptestname,"url": url,"status_codes": "200","required":"successed","headers":[{"Host":headerhost}],"no": 1}]})
