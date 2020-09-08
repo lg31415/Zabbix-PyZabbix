@@ -66,10 +66,9 @@ if __name__ == "__main__":
     try:
         if url:
             description="访问"+httptestname+"出现问题,探测IP："+ url
-            print zapi.httptest.create({"name":httptestname,"hostid":hostid, "delay": 300,"steps":[{"name": httptestname,"url": url,"status_codes": "200","required":"successed","headers":[{"name":"Host","value":headerhost}],"no": 1}]})
-            #expression="{"+"{0}:web.test.fail[{1}].last(#6)".format(hostname,httptestname)+"}"+"<>0"
-	    #print expression
-            #print zapi.trigger.create({"description":description,"expression":expression,"priority":5})
+            expression="{"+"Zabbix-Server:web.test.fail["+httptestname+"].last()"+"}"+"<>0 and " + "{"+"bj8-cmcdn0.bjcsk.cmcdn.net:web.test.fail["+httptestname+"].last()"+"}"+"<>0 and "  + "{"+"gd4-cmcdn1.gdyj.cmcdn.net:web.test.fail["+httptestname+"].last()"+"}"+"<>0 and " + "{"+"hb4-cmcdn1.hbwh.cmcdn.net:web.test.fail["+httptestname+"].last()"+"}"+"<>0 and "+ "{"+"nm2-cmcdn0.nmyd.cmcdn.net:web.test.fail["+httptestname+"].last()"+"}"+"<>0 and "+ "{"+"xz3-cmcdn1.xzyd.cmcdn.net:web.test.fail["+httptestname+"].last()"+"}"+"<>0"
+	    print expression
+            print zapi.trigger.create({"description":description,"expression":expression,"priority":5})
 	else:
             print zapi.httptest.create({"name":httptestname,"hostid":hostid,"steps":[{"name": httptestname,"url": url,"status_codes": "200","required":"successed","headers":[{"Host":headerhost}],"no": 1}]})
     except Exception as e:
